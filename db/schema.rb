@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_30_094651) do
+ActiveRecord::Schema.define(version: 2021_01_31_014127) do
+
+  create_table "admins", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_admins_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "major_category_name"
@@ -18,6 +31,8 @@ ActiveRecord::Schema.define(version: 2021_01_30_094651) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "major_category_id"
+    t.index ["major_category_id"], name: "index_categories_on_major_category_id"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -29,6 +44,13 @@ ActiveRecord::Schema.define(version: 2021_01_30_094651) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "major_categories", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -36,6 +58,8 @@ ActiveRecord::Schema.define(version: 2021_01_30_094651) do
     t.integer "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "recommended_flag", default: false
+    t.boolean "carriage_flag", default: false
     t.index ["category_id"], name: "index_products_on_category_id"
   end
 
@@ -45,6 +69,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_094651) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "score", default: 0
     t.index ["product_id"], name: "index_reviews_on_product_id"
     t.index ["user_id"], name: "index_reviews_on_user_id"
   end
@@ -85,6 +110,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_094651) do
     t.string "unconfirmed_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "deleted_flg", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

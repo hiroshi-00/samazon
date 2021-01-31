@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[show create edit update destroy]
+  before_action :set_product, only: %i[show destroy]
   
   def index
     if sort_params.present?
@@ -17,28 +17,9 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @reviews = @product.reviews
+    @reviews = @product.reviews_with_id
     @review = @reviews.new
-  end
-
-  def new
-    @product = Product.new
-    @categories = Category.all
-  end
-
-  def create
-    @product = Product.new(product_params)
-    @product.save
-    redirect_to product_url @product
-  end
-
-  def edit
-    @categories = Category.all
-  end
-
-  def update
-    @product.update(product_params)
-    redirect_to product_url @product
+    @star_repeat_select = Review.star_repeat_select
   end
 
   def destroy

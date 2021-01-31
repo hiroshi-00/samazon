@@ -33,6 +33,12 @@ class UsersController < ApplicationController
  def favorite
    @favorites = @user.likes
  end
+ 
+  def destroy
+    @user.deleted_flg = User.switch_flg(user.deleted_flg)
+    @user.update
+    redirect_to mypage_users_url
+  end
   
   private
     def set_user
