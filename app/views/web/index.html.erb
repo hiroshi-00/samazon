@@ -8,7 +8,7 @@
         
         <% @recommend_products.each do |recommend_product| %>
         <div class="col-4">
-          <%= link_to product_path(@recently_products) do %>
+          <%= link_to product_path(recommend_product) do %>
             <%= image_tag "/images/dummy.png", class: "img-thumbnail" %>
           <% end %>
           <div class="row">

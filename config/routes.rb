@@ -14,9 +14,16 @@ Rails.application.routes.draw do
   
   namespace :dashboard do
     resources :users, only: [:index, :destroy]
-    resources :major_categories, except: [:new]
+    resources :major_categories
     resources :categories, except: [:new]
     resources :products, except: [:show]
+    resources :orders, only: [:index] do
+      collection do
+        get  "import/csv", :to => "products#import"
+        post "import/csv", :to => "products#import_csv"
+        get  "import/csv_download", :to => "products#download_csv"
+      end
+    end
   end
 
   devise_for :users, :controllers => {
@@ -48,6 +55,11 @@ Rails.application.routes.draw do
       put "mypage/password", :to => "users#update_password"
       get  "mypage/favorite", :to => "users#favorite"
       delete "mypage/delete", :to => "users#destroy"
+      get    "mypage/cart_history",    :to => "users#cart_history_index", :as => "mypage_cart_histories"
+      get    "mypage/cart_history/:num",    :to => "users#cart_history_show", :as => "mypage_cart_history"
+    end
+    
+    member do
     end
   end
   

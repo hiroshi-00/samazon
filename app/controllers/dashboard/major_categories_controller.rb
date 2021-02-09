@@ -4,7 +4,7 @@ class Dashboard::MajorCategoriesController < ApplicationController
   layout "dashboard/dashboard"
 
   def index
-    @major_categories = Major_category.display_list(params[:pages])
+    @major_categories = MajorCategory.display_list(params[:pages])
   end
 
   def show
