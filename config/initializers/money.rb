@@ -4,7 +4,7 @@ MoneyRails.configure do |config|
 
   # To set the default currency
   #
-  config.default_currency = :jpy
+  # config.default_currency = :jpy
 
   # Set default bank object
   #

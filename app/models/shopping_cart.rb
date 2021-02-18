@@ -9,10 +9,8 @@ class ShoppingCart < ApplicationRecord
   scope :bought_cart_ids, -> { where(buy_flag: true).pluck(:id) }
   scope :bought_carts, -> (ids) { where("id LIKE ?", "%#{ids}%") }
   scope :bought_cart_user_ids_list, -> { where(buy_flag: true).pluck(:id, :user_id) }
-  
   scope :user_bought_carts, -> (user) { where(user_id: user.id, buy_flag: true) }
-
-  scope :pluck_id_name_shipping_cost_flag_list, -> (user) { where(user_id: user.id, buy_flag: true).pluck(:image, :name, :quantity, :price, :shipping_cost, :product_total_price) } 
+  
 
   scope :sort_list, -> { 
     {
@@ -64,22 +62,30 @@ class ShoppingCart < ApplicationRecord
 
   def cart_contents
     bought_cart_items = ShoppingCartItem.user_cart_items(self.id)
+    # logger.debug("^^^^^^^^^^^^^^^^^^^ bought_cart_items = #{bought_cart_items[0].id}")
     product_contents_list = Product.pluck_id_name_shipping_cost_flag_list(bought_cart_items)
-
+    logger.debug("^^^^^^^^^^^^^^^^^^^ product_contents_list count = #{product_contents_list.count}")
+    
+    
+                                                     
     hash = Hash.new { |h,k| h[k] = {} }
     bought_cart_items.each do |bought_cart_item|
-      hash[bought_cart_item.id][:image] = product_contents_list[bought_cart_item.id][:image]
-      hash[bought_cart_item.id][:name] = product_contents_list[bought_cart_item.id][:name]
+      hash[bought_cart_item.id][:image] = product_contents_list.find(bought_cart_item.id).image
+      hash[bought_cart_item.id][:name] = product_contents_list.find(bought_cart_item.id).name
       hash[bought_cart_item.id][:quantity] = bought_cart_item.quantity
       hash[bought_cart_item.id][:price] = bought_cart_item.price_cents
-      hash[bought_cart_item.id][:shipping_cost] = product_contents_list[bought_cart_item.id][:carriage_flag] ?
+      hash[bought_cart_item.id][:shipping_cost] = product_contents_list.find(bought_cart_item.id).carriage_flag ?
                                                                 800 * hash[bought_cart_item.id][:quantity]
                                                                 : 0
       hash[bought_cart_item.id][:product_total_price] = hash[bought_cart_item.id][:shipping_cost] 
                                                         (hash[bought_cart_item.id][:quantity] *
                                                         hash[bought_cart_item.id][:price])
-      return hash
+                                                        
+    
+      
     end
+    logger.debug("^^^^^^^^^^^^^^^^^^^ hash count = #{hash.count}")
+    return hash
   end
   
   def self.get_current_user_orders(user)

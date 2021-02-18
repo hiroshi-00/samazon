@@ -11,7 +11,7 @@ class Dashboard::OrdersController < ApplicationController
                             ShoppingCart.get_orders({code: code})
                             : ShoppingCart.get_orders
                             
-    logger.debug("---------------------------- @order = #{@order}")                    
+    # logger.debug("---------------------------- @order = #{@order}")                    
     @orders_array = Kaminari.paginate_array(@orders.to_a).page(params[:page]).per(15)
     @total = @orders_array.count
   end

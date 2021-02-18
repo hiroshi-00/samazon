@@ -8,6 +8,8 @@ class ShoppingCartsController < ApplicationController
     @product_names = Product.in_cart_product_names(@user_cart_item_ids)
     @user_cart.shipping_cost_check(current_user)
     @total = @user_cart.total.to_i
+    # logger.debug("===================================== @user_cart_items = #{@user_cart_items[1].price_cents} ")
+    # logger.debug("===================================== @user_cart_items = #{@user_cart_items[1].quantity}")
   end
   
   def show
@@ -17,7 +19,7 @@ class ShoppingCartsController < ApplicationController
   def create
     @product = Product.find(product_params[:product_id])
     @user_cart.add(@product, product_params[:price].to_i, product_params[:quantity].to_i)
-    redirect_to product_url(@product)
+    redirect_to cart_users_path(@product)
   end
    
   def update
@@ -26,6 +28,12 @@ class ShoppingCartsController < ApplicationController
   def destroy
     @user_cart.buy_flag = true
     @user_cart.save
+    Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
+    Payjp::Charge.create( 
+                          :customer => current_user.token,
+                          :amount => @user_cart.total.to_i,
+                          :currency => 'jpy'
+                        )
     redirect_to cart_users_url
   end
 

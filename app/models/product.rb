@@ -3,12 +3,13 @@ class Product < ApplicationRecord
   has_many :reviews, dependent: :destroy
   has_many :likes, dependent: :destroy
   
-
+  mount_uploader :image, ImageUploader
   extend DisplayList
   
   scope :on_category, -> (category) { where(category_id: category) }
   scope :sort_order, -> (order) { order(order) }
   scope :search_for_id_and_name, -> (keyword) { where("keyword LIKE ?", "%値%")}
+  scope :pluck_id_name_shipping_cost_flag_list, -> (product_ids) { where(id: product_ids) }
   scope :category_products, -> (category, page) { 
     on_category(category).
     display_list(page)
@@ -68,7 +69,7 @@ class Product < ApplicationRecord
   
   private
     def self.csv_attributes
-      [:name, :description, :price, :recommend_flag, :carriage_flag]
+      [:name, :description, :price, :recommended_flag, :carriage_flag]
     end
 
 end

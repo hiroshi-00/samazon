@@ -54,6 +54,11 @@ gem 'faker', :git => 'https://github.com/faker-ruby/faker.git', :branch => 'mast
 # ショッピングカートを実装できる
 gem 'acts_as_shopping_cart'
 
+# S3画像
+gem 'carrierwave'
+gem 'fog-aws'
+
+
 # 日別、週別、月別、年別にレコードを集計できる
 gem 'groupdate'
 
