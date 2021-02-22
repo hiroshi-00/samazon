@@ -8,7 +8,7 @@ class Product < ApplicationRecord
   
   scope :on_category, -> (category) { where(category_id: category) }
   scope :sort_order, -> (order) { order(order) }
-  scope :search_for_id_and_name, -> (keyword) { where("keyword LIKE ?", "%値%")}
+  scope :search_for_id_and_name, -> (keyword) { where("name LIKE ?", "%#{keyword}%")}
   scope :pluck_id_name_shipping_cost_flag_list, -> (product_ids) { where(id: product_ids) }
   scope :category_products, -> (category, page) { 
     on_category(category).

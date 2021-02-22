@@ -1,11 +1,12 @@
 class Dashboard::ProductsController < ApplicationController
   before_action :authenticate_admin!
-  before_action :set_product, only: %w[show edit update destroy]
+  before_action :set_product, only: %i[show edit update destroy]
   layout "dashboard/dashboard"
 
   def index
     sort_query = {}
     @sorted = ""
+    
     if params[:sort].present?
       slices = params[:sort].split(' ')
       sort_query[slices[0]] = slices[1]
@@ -77,6 +78,6 @@ class Dashboard::ProductsController < ApplicationController
     end
 
     def product_params
-      params.require(:product).permit(:name, :description, :price, :recommended_flag, :category_id, :image)
+      params.require(:product).permit(:name, :description, :price, :recommended_flag, :carriage_flag, :category_id, :image)
     end
 end

@@ -13,9 +13,9 @@ Rails.application.routes.draw do
   end
   
   namespace :dashboard do
-    resources :users, only: [:index, :destroy]
-    resources :major_categories
-    resources :categories, except: [:new]
+    resources :users, only: %i[index destroy]
+    resources :major_categories, except: %i[new show]
+    resources :categories, except: %i[new show]
     resources :products, except: [:show]
     resources :orders, only: [:index] do
       collection do
@@ -42,7 +42,7 @@ Rails.application.routes.draw do
     get "logout", :to => "users/sessions#destroy"
   end
   
-  resource :users, only: [:edit, :update] do
+  resource :users, only: %i[edit update] do
     collection do
       get "cart", :to => "shopping_carts#index"
       post "cart/create", :to => "shopping_carts#create"
@@ -63,7 +63,7 @@ Rails.application.routes.draw do
   end
   
   resources :products do
-    resources :reviews, only: :create
+    resources :reviews, only: [:create]
     resource :likes, only: %i[create destroy]
   end
 end

@@ -20,9 +20,9 @@
     <div class="form-inline mt-4 mb-4 row">
       <%= f.label "画像", class: "col-2 d-flex justify-content-start" %>
       <% if @product.image.present? %>
-        <%= image_tag @product.image.to_s, class: "img-fluid" %>
+        <%= image_tag @product.image.to_s, class: "img-thumbnail" %>
       <% else %>
-        <%= image_tag "/image/dummy.png", class: "img-fluid" %>
+        <%= image_tag "/images/dummy.png", class: "img-thumbnail" %>
       <% end %>
       <div class="d-flex flex-column ml-2">
         <small class="mb-3">600px×600px推奨。<br>商品の魅力が伝わる画像をアップロードして下さい。</small>

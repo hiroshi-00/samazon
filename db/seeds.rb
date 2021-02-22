@@ -6,4 +6,5 @@ table_names.each do |table_name|
     puts "#{table_name}_seeder.rbを適用しています・・・"
     require(path)
   end
+  puts "#{table_name}_seeder.rbを適用しました"
 end

@@ -32,6 +32,11 @@ class UsersController < ApplicationController
   
   def favorite
     @favorites = @user.likes
+    if @favorites.present?
+      true
+    else
+      redirect_to root_path, notice: '商品がありません'
+    end
   end
  
   def destroy
@@ -51,13 +56,12 @@ class UsersController < ApplicationController
     @cart_info = cart.cart_info
     @cart_contents = cart.cart_contents
   end
-  
+
   def register_card
     Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
     @count = 0
     card_info = {}
 
-    logger.debug("===========================================card_info = #{card_info.to_h}")
     if @user.token != ""
       result = Payjp::Customer.retrieve(@user.token).cards.all(limit: 1).data[0]
       @count = Payjp::Customer.retrieve(@user.token).cards.all.count
@@ -89,7 +93,7 @@ class UsersController < ApplicationController
     redirect_to mypage_users_url
   end
 
-  
+
   private
     def set_user
        @user = current_user

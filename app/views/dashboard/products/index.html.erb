@@ -45,9 +45,9 @@
         <th scope="row"><%= product.id %></td>
         <td>
           <% if product.image.present? %>
-            <%= image_tag product.image.to_s, class: "img-fluid h-10" %>
+            <%= image_tag product.image.to_s, class: "img-thumbnail" %>
           <% else %>
-            <%= image_tag "/images/dummy.png", class: "img-fluid h-10" %>
+            <%= image_tag "/images/dummy.png", class: "img-thumbnail" %>
           <% end %>
         </td>
         <td><%= product.name %></td>

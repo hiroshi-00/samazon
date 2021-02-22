@@ -9,7 +9,11 @@
       <div class="col-md-8 mt-2">
         <div class="d-inline-flex">
           <%= link_to product_path(favorite.product_id), class: "w-25" do %>
-            <%= image_tag "/images/dummy.png", class: "img-fuild w-100" %>
+            <% if favorite.product.image.present? %>
+              <%= image_tag favorite.product.image.to_s, class: "img-thumbnail" %>
+            <% else %>
+              <%= image_tag "/images/dummy.png", class: "img-thumbnail" %>
+            <% end %>
           <% end %>
           <div class="container mt-3">
             <h5 class="w-100 samazon-favorite-item-text"><%= favorite.product.name %></h5>
@@ -18,15 +22,15 @@
         </div>
       </div>
       <div class="col-md-2 d-flex align-items-center justify-content-end">
-        <%= link_to product_path(favorite.product_id), class: "samazon-favorite-item-delete" do %>
+        <%= link_to product_likes_path(favorite.product), :method => :delete do %>
           削除
         <% end %>
       </div>
       <div class="col-md-2 d-flex align-items-center justify-content-end">
-        <%= form_with url: cart_create_users_path , local: true, class: "d-flex justify-content-end mt-3" do |f| %>
+        <%= form_with url: cart_create_users_path, local: true, class: "d-flex justify-content-end mt-3" do |f| %>
           <%= f.hidden_field :product_id, value: favorite.product_id %>
           <%= f.hidden_field :price, value: favorite.product.price %>
-          
+
           <div class="btn samazon-submit-button w-100" data-toggle="modal" data-target="#buy-confirm-modal-<%= favorite.product_id %>">カートに追加</div>
           <div class="modal fade" id="buy-confirm-modal-<%= favorite.product_id %>" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
