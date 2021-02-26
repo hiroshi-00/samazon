@@ -4,12 +4,12 @@
       <%= image_tag "/images/logo.jpg" %>
     <% end %>
     <form class="form-inline">
-      <div class="form-group">
-        <input class="form-control samazon-header-search-input">
-      </div>
-      <div class="input-group">
-        <button type="submit" class="btn samazon-header-search-button"><i class="fas fa-search samazon-header-search-icon"></i></button>
-      </div>
+      <%= form_with url: products_path, method: :get, local: true do |f| %>
+        <div class="d-flex flex-inline form-group">
+          <%= f.text_field :keyword, class: "form-control form-control samazon-header-search-input", placeholder: "商品名" %>
+        </div>
+        <%= f.submit "検索", class: "btn samazon-submit-button" %>
+      <% end %>
     </form>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>

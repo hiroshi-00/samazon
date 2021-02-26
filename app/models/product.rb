@@ -14,6 +14,10 @@ class Product < ApplicationRecord
     on_category(category).
     display_list(page)
   }
+  
+  scope :category_total, -> (category) { 
+    on_category(category)
+  }
 
   scope :sort_products, -> (sort_order, page) {
     on_category(sort_order[:sort_category]).
@@ -32,6 +36,7 @@ class Product < ApplicationRecord
   }
    
   scope :in_cart_product_names, -> (cart_item_ids) { where(id: cart_item_ids).pluck(:name) }
+  scope :in_cart_product_images, -> (cart_item_ids) { where(id: cart_item_ids).pluck(:image) }
   scope :recently_products, -> (number) { order(created_at: "desc").take(number) }
   scope :recommend_products, -> (number) { where(recommended_flag: true).take(number) }
   scope :check_products_carriage_list, -> (product_ids) { where(id: product_ids).pluck(:carriage_flag)}

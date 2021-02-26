@@ -11,17 +11,22 @@
           <%= f.hidden_field :sort_category, value: @category.id %>
           並び替え
           <% if @sorted.present? %>
-            <%= f.select :sort, @sort_list, selected: @sorted, onChange: "javascript: this.form.submit();", class: "form-inline ml-2" %>
+            <%= f.select :sort, @sort_list, selected: @sorted, onChange: "javascript: this.form.submit();", class: "form-inline ml-2 form-control" %>
           <% else %>
-            <%= f.select :sort, @sort_list, {}, onChange: "javascript: this.form.submit();", class: "form-inline ml-2" %>
+            <%= f.select :sort, @sort_list, {}, onChange: "javascript: this.form.submit();", class: "form-inline ml-2 form-control" %>
           <% end %>
         <% end %>
       <% end %>
     </div>
     <div class="container mt-4">
       <div class="row w-100">
-
+        <% if params[:keyword].present? %>
+          <div class="container">
+            <h1>合計<%= @total_count %>件</h1>
+          </div>
+        <% end %>
         <% @products.each do |product|%>
+        
         <div class="col-3">
           <%= link_to product_path(product) do %>
             <% if product.image.present? %>

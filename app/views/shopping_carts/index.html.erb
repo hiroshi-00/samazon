@@ -18,10 +18,17 @@
     <div class="row">
       <% (0..@user_cart_items_count - 1).each do |list_number| %>
       <div class="col-md-2 mt-2">
-          <%= image_tag "/images/dummy.png", class: "img-fuild w-100" %>
+        <%= link_to products_path(@product) do %>
+          <%= image_tag "/images/dummy.png", class: "img-thumbnail" %>
+      　<% end %>
       </div>
-      <div class="col-md-6 mt-4">
+      <div class="col-md-4 mt-4">
         <h3 class="mt-4"><%= @product_names[list_number] %></h3>
+      </div>
+      <div class="col-md-2">
+        <%= link_to cart_users_path(@user_cart), :method => :delete, data: {confirm: "商品棚から#{@product_names}を削除しますか？"} do %>
+          <h3 class="btn btn-danger mt-4">削除</h3>
+        <% end %>
       </div>
       <div class="col-md-2">
         <h3 class="w-100 mt-4"><%= @user_cart_items[list_number].quantity %></h3>
@@ -29,6 +36,7 @@
       <div class="col-md-2">
         <h3 class="w-100 mt-4">￥<%= @user_cart_items[list_number].price_cents * @user_cart_items[list_number].quantity %></h3>
       </div>
+
       <% end %>
     </div>
 
@@ -48,7 +56,7 @@
       </div>
     </div>
 
-    <%= form_with url: cart_users_path , method: :delete, class: "d-flex justify-content-end mt-3" do |f| %>
+    <%= form_with url: cart_users_path, method: :delete, class: "d-flex justify-content-end mt-3" do |f| %>
       <%= link_to "買い物を続ける", products_path, class: "btn samazon-favorite-button border-dark text-dark mr-3" %>
       <div class="btn samazon-submit-button" data-toggle="modal" data-target="#buy-confirm-modal">購入を確定する</div>
       <% if current_user.token.present? %>

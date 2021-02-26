@@ -2,16 +2,14 @@ class ShoppingCartsController < ApplicationController
   before_action :set_cart, only: %i[index create destroy]
  
   def index
-    if @user_cart.present? 
-      @user_cart_items = ShoppingCartItem.user_cart_items(@user_cart)
-      @user_cart_items_count = ShoppingCartItem.user_cart_items(@user_cart).count
-      @user_cart_item_ids = ShoppingCartItem.user_cart_item_ids(@user_cart)
-      @product_names = Product.in_cart_product_names(@user_cart_item_ids)
-      @user_cart.shipping_cost_check(current_user)
-      @total = @user_cart.total.to_i
-    else
-      redirect_to root_path, notice: '商品がありません'
-    end
+    @user_cart_items = ShoppingCartItem.user_cart_items(@user_cart)
+    @user_cart_items_count = ShoppingCartItem.user_cart_items(@user_cart).count
+    @user_cart_item_ids = ShoppingCartItem.user_cart_item_ids(@user_cart)
+    @product_names = Product.in_cart_product_names(@user_cart_item_ids)
+    @product_images = Product.in_cart_product_images(@user_cart_item_ids)
+    logger.debug("^^^^^^^^^^^^^^^^^^^ @product_images = #{@product_images}")
+    @user_cart.shipping_cost_check(current_user)
+    @total = @user_cart.total.to_i
   end
   
   def show
@@ -43,7 +41,7 @@ class ShoppingCartsController < ApplicationController
 
   private
     def product_params
-      params.permit(:product_id, :product, :price, :quantity, :likes_id)
+      params.permit(:product_id, :product, :price, :quantity, :likes_id, :image)
     end
     
     def set_cart

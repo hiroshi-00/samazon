@@ -1,6 +1,6 @@
 class ShoppingCart < ApplicationRecord
-  
   acts_as_shopping_cart
+  extend DisplayList
   
   scope :set_user_cart, -> (user) { user_cart = where(user_id: user.id, buy_flag: false)&.last
                                user_cart.nil? ? ShoppingCart.create(user_id: user.id)
@@ -64,7 +64,7 @@ class ShoppingCart < ApplicationRecord
     bought_cart_items = ShoppingCartItem.user_cart_items(self.id)
     # logger.debug("^^^^^^^^^^^^^^^^^^^ bought_cart_items = #{bought_cart_items[0].id}")
     product_contents_list = Product.pluck_id_name_shipping_cost_flag_list(bought_cart_items)
-    logger.debug("^^^^^^^^^^^^^^^^^^^ product_contents_list count = #{product_contents_list.count}")
+    # logger.debug("^^^^^^^^^^^^^^^^^^^ product_contents_list count = #{product_contents_list.count}")
     
     
                                                      

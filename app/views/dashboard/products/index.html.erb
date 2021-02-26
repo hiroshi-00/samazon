@@ -7,14 +7,14 @@
     <%= f.select :sort, @sort_list, {}, onChange: "javascript: this.form.submit();", class: "form-inline ml-2 form-control" %>
   <% end %>
 <% end %>
-<div class="w-75 mt-2">
+<div class="w-80 mt-2">
   <div class="w-75">
     <%= form_with url: dashboard_products_path, method: :get, local: true do |f| %>
       <div class="d-flex flex-inline form-group">
         <div class="d-flex align-items-center">
           商品ID・商品名
         </div>
-        <%= f.text_area :keyword, class: "form-control ml-2 w-50" %>
+        <%= f.text_field :keyword, class: "form-control ml-2 w-50", placeholder: "商品名" %>
       </div>
       <%= f.submit "検索", class: "btn samazon-submit-button" %>
     <% end %>

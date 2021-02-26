@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="col-md-2 d-flex align-items-center justify-content-end">
-        <%= link_to product_likes_path(favorite.product), :method => :delete do %>
+        <%= link_to product_likes_path(favorite.product), :method => :delete, data: {confirm: "商品棚から#{favorite.product.name}を削除しますか？"} do %>
           削除
         <% end %>
       </div>
